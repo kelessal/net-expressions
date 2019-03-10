@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Salih Keleş</Authors>
+    <Description>Handful expression tree building blocks</Description>
+    <Copyright>©2019 Salih Keleş</Copyright>
+    <PackageTags>expression tree</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Net.Extensions" Version="1.0.0" />
+    <PackageReference Include="Net.Reflection" Version="1.0.0" />
+  </ItemGroup>
+
+</Project>
