@@ -6,6 +6,9 @@
     <Description>Handful expression tree building blocks</Description>
     <Copyright>©2019 Salih Keleş</Copyright>
     <PackageTags>expression tree</PackageTags>
+    <PackageLicenseUrl>https://github.com/kelessal/net-expressions/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/kelessal/net-expressions</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/kelessal/net-expressions/blob/master/images/infinity.png</PackageIconUrl>
   </PropertyGroup>
 
   <ItemGroup>
