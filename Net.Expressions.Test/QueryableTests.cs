@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Net.Expressions.Test
 {
-    public class Queryable
+    public class QueryableTests
     {
         [Fact]
         public void Test1()

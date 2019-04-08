@@ -7,77 +7,46 @@ using System.Text;
 
 namespace Net.Expressions
 {
-    enum LinkType
+    public class Queryable<T>
     {
-        And,
-        Or
-    }
-    class LinkItem<T>
-    {
-        public Expression<Func<T,bool>> Expression { get; set; }
-        public LinkType LinkType { get; set; }
-    }
-    public class Predicate<T>
-    {
-        List<LinkItem<T>> Items = new List<LinkItem<T>>();
-        private Predicate()
+        Expression<Func<T, bool>> Exp;
+        private Queryable()
         {
 
         }
-        public static Predicate<T> New(Expression<Func<T,bool>> expression)
+        public static Queryable<T> New(Expression<Func<T,bool>> expression)
         {
-            var result = new Predicate<T>();
-            result.Items.Add(new LinkItem<T> {Expression=expression });
+            var result = new Queryable<T>();
+            result.Exp = expression;
             return result;
         }
-        public Predicate<T> And(Expression<Func<T,bool>> exp)
+        public Queryable<T> And(Expression<Func<T,bool>> exp)
         {
-            this.Items.Add(new LinkItem<T>
-            {
-                Expression = exp,
-                LinkType = LinkType.And
-            });
-            return this;
+            var result = new Queryable<T>();
+            var parameter = Expression.Parameter(typeof(T));
+            var body= Expression.AndAlso(this.Exp.Body.ReplaceParameter(this.Exp.Parameters[0], parameter),
+                exp.Body.ReplaceParameter(exp.Parameters[0], parameter));
+            result.Exp = Expression.Lambda<Func<T, bool>>(body, parameter);
+            return result;
         }
-        public Predicate<T> Or(Expression<Func<T, bool>> exp)
+        public Queryable<T> Or(Expression<Func<T, bool>> exp)
         {
-            this.Items.Add(new LinkItem<T>
-            {
-                Expression = exp,
-                LinkType = LinkType.Or
-            });
-            return this;
+            var result = new Queryable<T>();
+            var parameter = Expression.Parameter(typeof(T));
+            var body = Expression.OrElse(this.Exp.Body.ReplaceParameter(this.Exp.Parameters[0], parameter),
+                exp.Body.ReplaceParameter(exp.Parameters[0], parameter));
+            result.Exp = Expression.Lambda<Func<T, bool>>(body, parameter);
+            return result;
         }
 
         public Expression<Func<T,bool>> AsExpression()
         {
-            if (this.Items.IsEmpty()) return _ => true;
-            var parameter = Expression.Parameter(typeof(T));
-            var first = this.Items.First();
-            Expression result = first.Expression.Body
-                .ReplaceParameter(first.Expression.Parameters[0], parameter);
-            
-            foreach(var item in this.Items.Skip(1))
-            {
-                switch (item.LinkType)
-                {
-                    case LinkType.And:
-                        result = Expression.AndAlso(result, item.Expression.Body.ReplaceParameter(item.Expression.Parameters[0], parameter));
-                        break;
-                    case LinkType.Or:
-                        result = Expression.OrElse(result, item.Expression.Body.ReplaceParameter(item.Expression.Parameters[0], parameter));
-                        break;
-                    default:
-                        break;
-                }
-            }
-            return Expression.Lambda(result, parameter) as Expression<Func<T,bool>>;
+            return this.Exp;
         }
 
         public Func<T, bool> AsFunc()
         {
-            var exp = this.AsExpression();
-            return exp.Compile() as Func<T, bool>;
+            return this.Exp.Compile();
         }
     }
 }
