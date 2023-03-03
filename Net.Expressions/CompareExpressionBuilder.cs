@@ -93,7 +93,7 @@ namespace Net.Expressions
 
             var isStringCompare = StringCompareTypes.Contains(compareType);
             var convertType = isStringCompare ? typeof(string) : reference.Type;
-            values = values.Select(p => p.ChangeType(convertType)).ToArray();
+            values = values.Select(p => p.As(convertType)).ToArray();
             if (convertType == typeof(string))
             {
                 values = values.Where(p => !p.IsNull()).Select(p => (p as string).ToLower()).ToArray();
