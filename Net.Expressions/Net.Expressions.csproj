@@ -9,12 +9,12 @@
     <PackageLicenseUrl>https://github.com/kelessal/net-expressions/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/kelessal/net-expressions</PackageProjectUrl>
     <PackageIconUrl>https://github.com/kelessal/net-expressions/blob/master/images/infinity.png</PackageIconUrl>
-    <Version>3.5</Version>
+    <Version>4.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Net.Extensions" Version="2.0.0" />
-    <PackageReference Include="Net.Reflection" Version="3.5.0" />
+    <PackageReference Include="Net.Reflection" Version="4.0.0" />
   </ItemGroup>
 
 </Project>
